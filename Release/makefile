@@ -1,5 +1,17 @@
 ################################################################################
 
+GCC := arm-none-eabi-gcc
+GCC_OPTIONS := -ffunction-sections -fdata-sections -fsingle-precision-constant -flto
+GCC_WARNINGS := -Wunused -Wuninitialized -Wall -Wconversion -Wshadow -Wfloat-equal
+ARCH_FLAGS := \
+   -mcpu=cortex-m4 \
+   -mthumb \
+   -mfloat-abi=hard \
+   -mfpu=fpv4-sp-d16
+DEFINES := -D__FPU_USED=1 -DHSE_VALUE=8000000 -DUSE_HAL_DRIVER -DUSE_STM32F4_DISCO -DSTM32F407xx
+OPTIM_FLAGS = -O0 -g   #Don't optimize and debug (??)
+C_STANDARD := -std=c11
+
 -include ../makefile.init
 
 RM := rm -rf
