@@ -218,3 +218,8 @@ pip-log.txt
 .mr.developer.cfg
 #/Release
 
+
+Release/*.elf
+Release/*.bin
+Release/*.map
+Release/*.lst
