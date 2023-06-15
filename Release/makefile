@@ -1,5 +1,7 @@
 ################################################################################
 
+PROJECT_NAME := Dekrispator_v2
+
 GCC := arm-none-eabi-gcc
 GCC_OPTIONS := -ffunction-sections -fdata-sections -fsingle-precision-constant -flto
 GCC_WARNINGS := -Wunused -Wuninitialized -Wall -Wconversion -Wshadow -Wfloat-equal
@@ -42,51 +44,51 @@ endif
 -include ../makefile.defs
 
 # Add inputs and outputs from these tool invocations to the build variables 
-SECONDARY_FLASH += \
-Dekrispator_v2.bin \
+SECONDARY_FLASH += $(PROJECT_NAME).bin \
 
-SECONDARY_LIST += \
-Dekrispator_v2.lst \
+SECONDARY_LIST += $(PROJECT_NAME).lst \
 
-SECONDARY_SIZE += \
-Dekrispator_v2.siz \
+SECONDARY_SIZE += $(PROJECT_NAME).siz \
 
 
 # All Target
-all: Dekrispator_v2.elf secondary-outputs
+all: $(PROJECT_NAME).elf secondary-outputs
 
 # Tool invocations
-Dekrispator_v2.elf: $(OBJS) $(USER_OBJS)
+$(PROJECT_NAME).elf: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross ARM C Linker'
-	arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mfloat-abi=hard -mfpu=fpv4-sp-d16 -O3 -ffunction-sections -fdata-sections -fsingle-precision-constant -flto -Wunused -Wuninitialized -Wall -Wconversion -Wshadow -Wfloat-equal -T "../STM32F407VG_FLASH.ld" -Xlinker --gc-sections -Wl,-Map,"Dekrispator_v2.map" --specs=nosys.specs -o "Dekrispator_v2.elf" $(OBJS) $(USER_OBJS) $(LIBS)
+	$(GCC) $(ARCH_FLAGS) $(OPTIM_FLAGS) $(GCC_OPTIONS) $(GCC_WARNINGS) -T "../STM32F407VG_FLASH.ld" -Xlinker --gc-sections -Wl,-Map,$(PROJECT_NAME).map --specs=nosys.specs -o $(PROJECT_NAME).elf $(OBJS) $(USER_OBJS) $(LIBS)
 	@echo 'Finished building target: $@'
 	@echo ' '
 
-Dekrispator_v2.bin: Dekrispator_v2.elf
+$(PROJECT_NAME).bin: $(PROJECT_NAME).elf
 	@echo 'Invoking: Cross ARM GNU Create Flash Image'
-	arm-none-eabi-objcopy -O binary "Dekrispator_v2.elf"  "Dekrispator_v2.bin"
+	arm-none-eabi-objcopy -O binary $(PROJECT_NAME).elf $(PROJECT_NAME).bin
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Dekrispator_v2.lst: Dekrispator_v2.elf
+$(PROJECT_NAME).lst: $(PROJECT_NAME).elf
 	@echo 'Invoking: Cross ARM GNU Create Listing'
-	arm-none-eabi-objdump --source --all-headers --demangle --line-numbers --wide "Dekrispator_v2.elf" > "Dekrispator_v2.lst"
+	arm-none-eabi-objdump --source --all-headers --demangle --line-numbers --wide $(PROJECT_NAME).elf > $(PROJECT_NAME).lst
 	@echo 'Finished building: $@'
 	@echo ' '
 
-Dekrispator_v2.siz: Dekrispator_v2.elf
+$(PROJECT_NAME).siz: $(PROJECT_NAME).elf
 	@echo 'Invoking: Cross ARM GNU Print Size'
-	arm-none-eabi-size --format=berkeley --totals "Dekrispator_v2.elf"
+	arm-none-eabi-size --format=berkeley --totals $(PROJECT_NAME).elf
 	@echo 'Finished building: $@'
 	@echo ' '
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(SECONDARY_FLASH)$(SECONDARY_LIST)$(SECONDARY_SIZE)$(ASM_DEPS)$(S_UPPER_DEPS)$(C_DEPS) Dekrispator_v2.elf
+	-$(RM) $(OBJS)$(SECONDARY_FLASH)$(SECONDARY_LIST)$(SECONDARY_SIZE)$(ASM_DEPS)$(S_UPPER_DEPS)$(C_DEPS) $(PROJECT_NAME).elf
 	-@echo ' '
 
 secondary-outputs: $(SECONDARY_FLASH) $(SECONDARY_LIST) $(SECONDARY_SIZE)
+
+flash: $(PROJECT_NAME).bin
+	st-flash write $(PROJECT_NAME).bin 0x8000000
 
 .PHONY: all clean dependents
 .SECONDARY:
