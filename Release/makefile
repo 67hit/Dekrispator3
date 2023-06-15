@@ -9,7 +9,8 @@ ARCH_FLAGS := \
    -mfloat-abi=hard \
    -mfpu=fpv4-sp-d16
 DEFINES := -D__FPU_USED=1 -DHSE_VALUE=8000000 -DUSE_HAL_DRIVER -DUSE_STM32F4_DISCO -DSTM32F407xx
-OPTIM_FLAGS = -O0 -g   #Don't optimize and debug (??)
+#OPTIM_FLAGS = -O0 -g   #Don't optimize and debug (??)
+OPTIM_FLAGS := -O3
 C_STANDARD := -std=c11
 
 -include ../makefile.init
