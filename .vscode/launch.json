@@ -5,17 +5,6 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "cwd": "${workspaceFolder}",
-            "executable": "./Release/Dekrispator_v2.elf",
-            "name": "Debug with ST-Link",
-            "request": "launch",
-            "type": "cortex-debug",
-            "runToEntryPoint": "main",
-            "showDevDebugOutput": "none",
-            "servertype": "stlink",
-            "gdbPath": "/usr/bin/gdb-multiarch"
-        },
-        {
             "cwd": "${workspaceRoot}",
             "executable": "./Release/Dekrispator_v2.elf",
             "name": "Debug with OpenOCD",
@@ -27,22 +16,6 @@
             "runToEntryPoint": "main",
             "showDevDebugOutput": "none",
             "gdbPath": "/usr/bin/gdb-multiarch"
-        },
-        {
-            "name": "Cortex Debug",
-            "cwd": "${workspaceFolder}",
-            "executable": "./Release/Dekrispator_v2.elf",
-            "request": "launch",
-            "type": "cortex-debug",
-            "runToEntryPoint": "main",
-            "servertype": "openocd",
-            "device": "STM32F407VGTx",
-            "showDevDebugOutput": "none",
-            "configFiles": [
-                "interface/stlink-dap.cfg",
-                "target/stm32f4x.cfg"
-            ],
-            "gdbPath": "/usr/bin/gdb",
         }
     ]
 }
