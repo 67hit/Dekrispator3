@@ -1,0 +1,23 @@
+{
+    "configurations": [
+        {
+            "name": "Linux",
+            "includePath": [
+                "${default}",
+                ".",
+                "drivers/STM32_USB_Host_Library/Core/Inc",
+                "drivers/STM32F4xx_HAL_Driver/Inc",
+                "drivers/cmsis",
+                "drivers/BSP",
+                "drivers/USBH_midi_class/Inc",
+                "${workspaceFolder}/Synth"
+            ],
+            "defines": ["STM32F407xx"],
+            "compilerPath": "/usr/bin/gcc",
+            "cStandard": "c11",
+            "cppStandard": "gnu++17",
+            "intelliSenseMode": "linux-gcc-x64"
+        }
+    ],
+    "version": 4
+}
