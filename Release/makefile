@@ -4,7 +4,12 @@ PROJECT_NAME := Dekrispator_v2
 
 GCC := arm-none-eabi-gcc
 GCC_OPTIONS := -ffunction-sections -fdata-sections -fsingle-precision-constant -flto
-GCC_WARNINGS := -Wunused -Wuninitialized -Wall -Wconversion -Wshadow -Wfloat-equal
+GCC_WARNINGS := -Wuninitialized -Wall -Wshadow -Wconversion -Wfloat-equal -Wunused
+
+GCC_DRIVER_BUILD_WARNINGS = -Wall
+#GCC_DRIVER_BUILD_WARNINGS += -Wuninitialized -Wshadow -Wfloat-equal -Wunused
+#GCC_DRIVER_BUILD_WARNINGS += -Wconversion
+
 ARCH_FLAGS := \
    -mcpu=cortex-m4 \
    -mthumb \
