@@ -140,7 +140,7 @@ void SysTick_Handler(void) {
 
 	TimingDelay_Decrement();
 	update_temporized_LED(LED_Blue);
-	//if (demoMode == true)
+	//if (demoMode)
 	DebounceUserButton();
 
 }

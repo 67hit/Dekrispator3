@@ -119,9 +119,9 @@ void DemoMode_toggle(uint8_t val) {
 void Sequencer_toggle(uint8_t val) { // run or stop sequencer
 	if (val == MIDI_MAXi) {
 		sequencerIsOn = !sequencerIsOn;
-		if(!sequencerIsOn) 
+		if(!sequencerIsOn)
 			ADSR_keyOff(&adsr);
-			Reset_notes_On();
+		Reset_notes_On();
 		BSP_LED_Toggle(LED_Red);
 	}
 }
@@ -485,7 +485,7 @@ void sequencer_newStep_action(void) // User callback function called by sequence
 void sequencer_newSequence_action(void) // User callback function called by sequencer_process()
 {
 	/* A new sequence begins ... */
-	if ((demoMode == true) && (freeze == false)) {
+	if (demoMode && !freeze) {
 		MagicPatch(MIDI_MAXi);
 		MagicFX(MIDI_MAXi);
 	}
@@ -508,7 +508,7 @@ void make_sound(uint16_t *buf, uint16_t length) // To be used with the Sequencer
 		/*--- Sequencer actions and update ---*/
 		//sequencer_process(); //computes f0 and calls sequencer_newStep_action() and sequencer_newSequence_action()
 		// GRA
-		if (sequencerIsOn == true) {
+		if (sequencerIsOn) {
 			sequencer_process(); //computes f0 and calls sequencer_newStep_action() and sequencer_newSequence_action()
 		} else {
 			f0 = notesFreq[currentNote];
@@ -530,7 +530,7 @@ void make_sound(uint16_t *buf, uint16_t length) // To be used with the Sequencer
 
 		// GRA
 
-		if (sequencerIsOn == true) {
+		if (sequencerIsOn) {
 			if (adsr.cnt_ >= seq.gateTime)
 				ADSR_keyOff(&adsr);
 		}

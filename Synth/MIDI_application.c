@@ -190,9 +190,8 @@ void ProcessReceivedMidiDatas(void)
 		if (pack.cin_cable != 0) // if incoming midi message...
 			start_LED_On(LED_Blue, 8);
 
-		if (sequencerIsOn == false)
+		if (!sequencerIsOn)
 		{
-
 			if ((pack.evnt0 & 0xF0) == 0x80) // Note off ? -------------------------------
 			{
 				uint8_t noteOff = pack.evnt1;
