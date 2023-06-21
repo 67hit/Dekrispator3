@@ -223,3 +223,7 @@ Release/*.elf
 Release/*.bin
 Release/*.map
 Release/*.lst
+Debug/*.elf
+Debug/*.bin
+Debug/*.map
+Debug/*.lst

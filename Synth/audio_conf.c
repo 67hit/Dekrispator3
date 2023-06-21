@@ -68,7 +68,9 @@ Below some examples of callback implementations.
 void BSP_AUDIO_OUT_HalfTransfer_CallBack(void)
 {
 	BSP_LED_Off(LED_Orange); // stop breathing
+#ifndef DEBUG_USB_MIDI
 	make_sound((uint16_t *)audiobuff, BUFF_LEN_DIV4);
+#endif
 	BSP_LED_On(LED_Orange); // breath again ! (cpu usage indicator)
 
 }
@@ -81,7 +83,9 @@ void BSP_AUDIO_OUT_HalfTransfer_CallBack(void)
 void BSP_AUDIO_OUT_TransferComplete_CallBack(void)
 {
 	BSP_LED_Off(LED_Orange);
+#ifndef DEBUG_USB_MIDI
 	make_sound((uint16_t *)(audiobuff + BUFF_LEN_DIV2), BUFF_LEN_DIV4);
+#endif
 	BSP_LED_On(LED_Orange);
 }
 

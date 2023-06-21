@@ -6,7 +6,7 @@
     "configurations": [
         {
             "cwd": "${workspaceRoot}",
-            "executable": "./Release/Dekrispator_v2.elf",
+            "executable": "./Debug/Dekrispator_v2.elf",
             "name": "Debug with OpenOCD",
             "request": "launch",
             "type": "cortex-debug",
