@@ -16,13 +16,16 @@ ARCH_FLAGS := \
    -mfloat-abi=hard \
    -mfpu=fpv4-sp-d16
 DEFINES := -D__FPU_USED=1 -DHSE_VALUE=8000000 -DUSE_HAL_DRIVER -DUSE_STM32F4_DISCO -DSTM32F407xx
-DEFINES += -DDEBUG_USB_MIDI
-OPTIM_FLAGS = -O0 -g   #Don't optimize and debug (??)
+OPTIM_FLAGS := -O0 -g
 C_STANDARD := -std=c11
 
--include ../makefile.init
+#-include ../makefile.init
 
 RM := rm -rf
+
+# All Target
+all: $(PROJECT_NAME).elf secondary-outputs
+
 
 # All of the sources participating in the build are defined here
 -include sources.mk
@@ -49,18 +52,15 @@ endif
 -include ../makefile.defs
 
 # Add inputs and outputs from these tool invocations to the build variables 
-SECONDARY_FLASH += $(PROJECT_NAME).bin \
-
-SECONDARY_LIST += $(PROJECT_NAME).lst \
-
-SECONDARY_SIZE += $(PROJECT_NAME).siz \
-
+SECONDARY_FLASH = $(PROJECT_NAME).bin
+SECONDARY_LIST = $(PROJECT_NAME).lst
+SECONDARY_MAP = $(PROJECT_NAME).map
 
 # All Target
 all: $(PROJECT_NAME).elf secondary-outputs
 
 # Tool invocations
-$(PROJECT_NAME).elf: $(OBJS) $(USER_OBJS)
+$(PROJECT_NAME).elf $(PROJECT_NAME).map &: $(OBJS) $(USER_OBJS)
 	@echo 'Building target: $@'
 	@echo 'Invoking: Cross ARM C Linker'
 	$(GCC) $(ARCH_FLAGS) $(OPTIM_FLAGS) $(GCC_OPTIONS) $(GCC_WARNINGS) -T "../STM32F407VG_FLASH.ld" -Xlinker --gc-sections -Wl,-Map,$(PROJECT_NAME).map --specs=nosys.specs -o $(PROJECT_NAME).elf $(OBJS) $(USER_OBJS) $(LIBS)
@@ -79,7 +79,7 @@ $(PROJECT_NAME).lst: $(PROJECT_NAME).elf
 	@echo 'Finished building: $@'
 	@echo ' '
 
-$(PROJECT_NAME).siz: $(PROJECT_NAME).elf
+size: $(PROJECT_NAME).elf
 	@echo 'Invoking: Cross ARM GNU Print Size'
 	arm-none-eabi-size --format=berkeley --totals $(PROJECT_NAME).elf
 	@echo 'Finished building: $@'
@@ -87,10 +87,10 @@ $(PROJECT_NAME).siz: $(PROJECT_NAME).elf
 
 # Other Targets
 clean:
-	-$(RM) $(OBJS)$(SECONDARY_FLASH)$(SECONDARY_LIST)$(SECONDARY_SIZE)$(ASM_DEPS)$(S_UPPER_DEPS)$(C_DEPS) $(PROJECT_NAME).elf
+	-$(RM) $(OBJS) $(SECONDARY_FLASH) $(SECONDARY_LIST) $(SECONDARY_MAP) $(ASM_DEPS) $(S_UPPER_DEPS) $(C_DEPS) $(PROJECT_NAME).elf
 	-@echo ' '
 
-secondary-outputs: $(SECONDARY_FLASH) $(SECONDARY_LIST) $(SECONDARY_SIZE)
+secondary-outputs: $(SECONDARY_FLASH) $(SECONDARY_LIST) $(SECONDARY_MAP)
 
 flash: $(PROJECT_NAME).bin
 	st-flash write $(PROJECT_NAME).bin 0x8000000
