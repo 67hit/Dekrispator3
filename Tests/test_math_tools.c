@@ -19,10 +19,30 @@ void test_approxExp(void)
     TEST_ASSERT_LESS_OR_EQUAL_FLOAT(0.00001, diff);
 }
 
+void test_1(void)
+{
+    TEST_FAIL_MESSAGE("Hello, this is a FAIL");
+    TEST_PASS_MESSAGE("This is a pass");
+}
+
+void test_2(void)
+{
+    TEST_ASSERT( 10 > 0 );
+    TEST_ASSERT( 0 > 1 );
+    TEST_ASSERT( 10 > 0 );
+    TEST_ASSERT( 0 > 1 );
+    TEST_ASSERT( 10 > 0 );
+    TEST_ASSERT( 0 > 1 );
+    TEST_ASSERT( 10 > 0 );
+    TEST_ASSERT( 0 > 1 );
+}
+
 int main(void)
 {
     UNITY_BEGIN();
     RUN_TEST(test_approxExp);
+    RUN_TEST(test_1);
+    RUN_TEST(test_2);
     return UNITY_END();
 }
 
