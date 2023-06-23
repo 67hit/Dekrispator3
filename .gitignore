@@ -227,3 +227,5 @@ Debug/*.elf
 Debug/*.bin
 Debug/*.map
 Debug/*.lst
+
+Tests/bin/*
