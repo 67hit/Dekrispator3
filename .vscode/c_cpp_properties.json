@@ -10,9 +10,12 @@
                 "drivers/cmsis",
                 "drivers/BSP",
                 "drivers/USBH_midi_class/Inc",
-                "${workspaceFolder}/Synth"
+                "${workspaceFolder}/Synth",
+                "${workspaceFolder}/unity-examples/unity/src"
             ],
-            "defines": ["STM32F407xx"],
+            "defines": [
+                "STM32F407xx"
+            ],
             "compilerPath": "/usr/bin/gcc",
             "cStandard": "c11",
             "cppStandard": "gnu++17",
