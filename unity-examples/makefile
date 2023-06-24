@@ -9,14 +9,14 @@ ifeq ($(OS),Windows_NT)
 	TARGET_EXTENSION=exe
 else
 	CLEANUP = rm -f
-	MKDIR = mkdir -p  # -p will add parent directories as needed
+	MKDIR = mkdir -p
 	TARGET_EXTENSION=out
 endif
 
 .PHONY: clean
 .PHONY: test
 
-TEST_PREFIX:=test_  # test files will be assumed to start with this string
+TEST_PREFIX = test_
 
 PATH_UNITY = unity/src/
 PATH_SRC = src/
@@ -39,35 +39,40 @@ CFLAGS = -I. -I$(PATH_UNITY) -I$(PATH_SRC) -DTEST
 RESULTS = $(patsubst $(PATH_TEST)$(TEST_PREFIX)%.c,$(PATH_RESULTS)$(TEST_PREFIX)%.txt,$(SRC_TEST) )
 
 # -s will suppress messages about non-existent or unreadable files
-PASSED = `grep -s PASS $(PATH_RESULTS)*.txt`
-FAIL = `grep -s FAIL $(PATH_RESULTS)*.txt`
-IGNORE = `grep -s IGNORE $(PATH_RESULTS)*.txt`
+PASSED = `grep -s :PASS $(PATH_RESULTS)*.txt`
+FAIL = `grep -s :FAIL $(PATH_RESULTS)*.txt`
+IGNORE = `grep -s :IGNORE $(PATH_RESULTS)*.txt`
 
 test: $(BUILD_PATHS) $(RESULTS)
+	@echo "-----------------------\nPASSED:\n-----------------------"
+	@echo "$(PASSED)"
 	@echo "-----------------------\nIGNORES:\n-----------------------"
 	@echo "$(IGNORE)"
 	@echo "-----------------------\nFAILURES:\n-----------------------"
 	@echo "$(FAIL)"
-	@echo "-----------------------\nPASSED:\n-----------------------"
-	@echo "$(PASSED)"
 	@echo "\nDONE"
 
 # run the test executables to obtain the test results
 # also write the errors into the result files
 $(PATH_RESULTS)%.txt: $(PATH_BUILD)%.$(TARGET_EXTENSION)
+	@echo -n "TEST: "
 	-./$< > $@ 2>&1
 
-$(PATH_BUILD)test_%.$(TARGET_EXTENSION): $(PATH_OBJS)$(TEST_PREFIX)%.o $(PATH_OBJS)%.o $(PATH_OBJS)unity.o $(PATH_DEPS)$(TEST_PREFIX)%.d
+$(PATH_BUILD)$(TEST_PREFIX)%.$(TARGET_EXTENSION): $(PATH_OBJS)$(TEST_PREFIX)%.o $(PATH_OBJS)%.o $(PATH_OBJS)unity.o #$(PATH_DEPS)$(TEST_PREFIX)%.d
+	@echo -n "LINK: "
 	$(LINK) -o $@ $^ $(LINK_LIBS)
 
 ## multiple "::" dependences for the same target will be treated in
 $(PATH_OBJS)%.o:: $(PATH_TEST)%.c
+	@echo -n "COMP: "
 	$(COMPILE) $(CFLAGS) $< -o $@
 
 $(PATH_OBJS)%.o:: $(PATH_SRC)%.c
+	@echo -n "COMP: "
 	$(COMPILE) $(CFLAGS) $< -o $@
 
 $(PATH_OBJS)%.o:: $(PATH_UNITY)%.c $(PATH_UNITY)%.h
+	@echo -n "COMP: "
 	$(COMPILE) $(CFLAGS) $< -o $@
 ## end of repeated same target
 
