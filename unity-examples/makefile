@@ -44,6 +44,7 @@ FAIL = `grep -s :FAIL $(PATH_RESULTS)*.txt`
 IGNORE = `grep -s :IGNORE $(PATH_RESULTS)*.txt`
 
 test: $(BUILD_PATHS) $(RESULTS)
+	@echo "\n#### TEST RESULTS ####"
 	@echo "-----------------------\nPASSED:\n-----------------------"
 	@echo "$(PASSED)"
 	@echo "-----------------------\nIGNORES:\n-----------------------"

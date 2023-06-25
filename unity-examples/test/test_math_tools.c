@@ -26,6 +26,8 @@ void test_1(void)
 
 void test_2(void)
 {
+    TEST_IGNORE();
+
     TEST_ASSERT( 10 > 0 );
     TEST_ASSERT( 0 > 1 );
     TEST_ASSERT( 10 > 0 );
